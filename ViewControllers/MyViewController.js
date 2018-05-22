@@ -16,7 +16,6 @@ var {width, height} = Dimensions.get('window');
 var itemWidth = (width - 20)/4;
 
 var DataRequest = require('../DataRequest/DataRequest');
-const mineUrl = '';
 
 class MyViewController extends PureComponent {
     static navigationOptions = ({navigation}) => ({  //静态配置当前页面的导航头样式
@@ -49,7 +48,6 @@ class MyViewController extends PureComponent {
     fetchMyViewData() {
         NativeModules.Utils.fetchObject('token', (data)=>{
             let requestUrl = mineUrl + '?' + 'token=' + data;
-            console.log(requestUrl);
             DataRequest.get(requestUrl, null, (responseData)=> {
                 this.configureData(responseData.data);
             }, (error)=> {
@@ -198,7 +196,6 @@ class MyViewController extends PureComponent {
         });
     }
     configureComponentData(data) {
-        console.log(data);
         let responseData = this.state.responseData;
         let headerData = null;
         for (var i = 0; i<data.length; i++) {

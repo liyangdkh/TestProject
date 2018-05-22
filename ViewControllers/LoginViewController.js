@@ -12,7 +12,6 @@ import {
     DeviceEventEmitter
 } from 'react-native';
 
-const loginUrl = '';
 
 var screenWidth = Dimensions.get('window').width;
 

@@ -15,8 +15,7 @@ import {
   StyleSheet,
   Text,
   View,
-    Dimensions,
-    NavigatorIOS,
+    NativeModules
 } from 'react-native';
 // var screenWidth = Dimensions.get('window').width;
 var RootViewController = require('./RootViewController/RootViewController');
@@ -60,7 +59,7 @@ export default class App extends React.Component {
     super(props);
   }
     componentDidMount() {
-
+        NativeModules.Utils.setCookie('cookies!!!');
     }
   render() {
     return (
