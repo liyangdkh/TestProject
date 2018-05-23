@@ -25,7 +25,7 @@ class LoginViewController extends Component {
         headerTitleStyle: {fontSize: 18, color: 'black'},
         headerStyle: {height: 44, backgroundColor: 'white'},
         headerLeft:<TouchableOpacity onPress={()=>{navigation.goBack()}}>
-            <Image source={{uri:'nav_back'}} style={{width:25, height:25, marginLeft:10}}/>
+            <Image source={{uri:'nav_back'}} style={{width:22, height:22, marginLeft:10}}/>
         </TouchableOpacity>,
     });
 
@@ -132,7 +132,6 @@ class LoginViewController extends Component {
             param.append('cellPhone', this.state.phoneNum);
             param.append('password', this.state.pwd);
             DataRequest.post(loginUrl, param, (responseData)=> {
-                console.log(responseData);
                 this.hideLoadingView();
                 NativeModules.Utils.saveLoginInfo(responseData.data);
                 NativeModules.Utils.setCookie('cookies!!!');

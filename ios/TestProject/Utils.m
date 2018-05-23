@@ -43,9 +43,26 @@ RCT_EXPORT_METHOD(saveLoginInfo:(NSDictionary *)loginInfo) {
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+RCT_EXPORT_METHOD(clearLoginInfo:(NSString *)text) {
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"isLogin"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"cellPhone"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"nickName"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"photoUrl"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"token"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"alias"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"memberId"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"key"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"loginPwdLevel"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"validate"];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wechatBind"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self setCookie:@"cookie"];
+}
+
 RCT_EXPORT_METHOD(isLogin:(RCTResponseSenderBlock)callBack) {
     NSNumber *isLogin = [[NSUserDefaults standardUserDefaults] objectForKey:@"isLogin"];
-    callBack(@[isLogin]);
+    NSNumber *result = isLogin? isLogin : @(NO);
+    callBack(@[result]);
 }
 
 + (NSDictionary *)generateCookies {

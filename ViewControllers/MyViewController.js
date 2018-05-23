@@ -9,11 +9,14 @@ import {
     ImageBackground,
     TouchableOpacity,
     DeviceEventEmitter,
-    NativeModules
+    NativeModules,
+    Modal
 } from 'react-native';
 
 var {width, height} = Dimensions.get('window');
 var itemWidth = (width - 20)/4;
+
+var LoadingView = require('../Views/LoadingView');
 
 var DataRequest = require('../DataRequest/DataRequest');
 
@@ -24,10 +27,16 @@ class MyViewController extends PureComponent {
         headerStyle: {height: 44, backgroundColor: 'white'},
         headerTintColor:'red',
         headerRight:<TouchableOpacity onPress={()=>{console.log('djfdfdff')}}>
-            <Image source={{uri:'nav_msg'}} style={{width:25, height:25, marginRight:10}}/>
+            <Image source={{uri:'nav_msg'}} style={{width:22, height:22, marginRight:10}}/>
         </TouchableOpacity>,
-        headerLeft:<TouchableOpacity onPress={()=>{console.log('setting button clicked!!!!')}}>
-            <Image source={{uri:'icon_setting'}} style={{width:25, height:25, marginLeft:10}}/>
+        headerLeft:<TouchableOpacity onPress={()=>{ NativeModules.Utils.isLogin((data)=>{
+            if (data === true) {
+                navigation.navigate('MyAccount');
+            } else {
+                navigation.navigate('Login');
+            }
+        })}}>
+            <Image source={{uri:'icon_setting'}} style={{width:22, height:22, marginLeft:10}}/>
         </TouchableOpacity>
         // headerTruncatedBackTitle:'返回',
     });
@@ -36,6 +45,7 @@ class MyViewController extends PureComponent {
         this.state = {
             responseData: null,
             headerData: null,
+            loadingShowed: true
         }
     }
     componentDidMount() {
@@ -51,11 +61,17 @@ class MyViewController extends PureComponent {
             DataRequest.get(requestUrl, null, (responseData)=> {
                 this.configureData(responseData.data);
             }, (error)=> {
+                this.setState({loadingShowed: false});
             });
         });
     }
     render() {
-        let view = <View style={{flex:1}}></View>;
+        var loadingView =  <Modal animationType={'fade'} transparent={true} visible={this.state.loadingShowed}>
+            <LoadingView></LoadingView>
+        </Modal>
+        let view = <View style={{flex:1}}>
+            {loadingView}
+        </View>;
         if (this.state.responseData && (this.state.responseData.length > 0)) {
             view = <View style={{flex:1, backgroundColor:'#f2f2f2'}}>
                 <SectionList style={{backgroundColor:'#f2f2f2'}}
@@ -70,6 +86,7 @@ class MyViewController extends PureComponent {
                              ListHeaderComponent={this.renderHeader.bind(this)}
                              stickySectionHeadersEnabled={true}>
                 </SectionList>
+                {loadingView}
             </View>
         }
         return view;
@@ -186,7 +203,7 @@ class MyViewController extends PureComponent {
                 this.fetchComponentData(requestUrl);
             }
         }
-        this.setState({responseData: datas, headerData: hData});
+        this.setState({responseData: datas, headerData: hData, loadingShowed: false});
     }
     fetchComponentData(componentUrl) {
         DataRequest.get(componentUrl, null, (responseData)=>{

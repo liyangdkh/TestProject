@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class DataRequest extends Component {
 
-    static get(url, params, successCallback, failCallback) {
+     static get(url, params, successCallback, failCallback) {
         var option = {
             method:'GET',
             header: {
@@ -11,6 +11,7 @@ class DataRequest extends Component {
                 'mid_global': '9',
                 'mid_global': 'ios'
             },
+            // timeout:10
         };
         fetch(url, option)
             .then((response)=>{
@@ -33,7 +34,8 @@ class DataRequest extends Component {
             header: {
                 'tgVersion': '@tiangou/ios/20180424/1526541435053'
             },
-            body: params
+            body: params,
+            // timeout:10
         };
         fetch(url, option)
             .then((response)=>{
@@ -48,7 +50,8 @@ class DataRequest extends Component {
             .catch((error)=>{
                 failCallback(error);
                 console.log(error);
-            });
+            })
+            .done();
     }
 
 }

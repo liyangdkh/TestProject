@@ -14,6 +14,7 @@ var LoginViewController = require('../ViewControllers/LoginViewController');
 var RegisterViewController = require('../ViewControllers/RegisterViewController');
 var FindPwdViewController = require('../ViewControllers/FindPwdViewController');
 var WebViewController = require('../ViewControllers/WebViewController');
+var MyAccountViewController = require('../ViewControllers/MyAccountViewController');
 
 const GoStackNavigatorRoute = {
     Go: {
@@ -160,6 +161,9 @@ const TabBar = createBottomTabNavigator(TabRouteConfigs, TabNavigatorConfig);
      },
      WebView: {
          screen: WebViewController,
+     },
+     MyAccount: {
+         screen: MyAccountViewController,
      }
  };
  const TabStackNavigatorOption = {
