@@ -13,11 +13,9 @@ import {
 } from 'react-native';
 
 var {width, height} = Dimensions.get('window');
-let mineUrl = 'https://mserv.test.66buy.com.cn/publics/mine/info';
-let myAddress = 'https://mserv.test.66buy.com.cn/publics/memberAddress/list';
-let logoutUrl = 'https://mserv.test.66buy.com.cn/publics/login/logout';
+
 var DataRequest = require('../DataRequest/DataRequest');
-var ImageHost = 'https://test.img.tg-img.com/';
+
 
 var LoadingView = require('../Views/LoadingView');
 
