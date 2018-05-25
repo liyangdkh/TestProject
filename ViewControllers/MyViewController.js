@@ -17,6 +17,7 @@ var {width, height} = Dimensions.get('window');
 var itemWidth = (width - 20)/4;
 
 var LoadingView = require('../Views/LoadingView');
+var FooterView = require('../Views/RecommendView');
 
 var DataRequest = require('../DataRequest/DataRequest');
 
@@ -45,6 +46,7 @@ class MyViewController extends PureComponent {
         this.state = {
             responseData: null,
             headerData: null,
+            footerData:null,
             loadingShowed: true
         }
     }
@@ -84,7 +86,8 @@ class MyViewController extends PureComponent {
                              keyExtractor={(item,index)=>("index"+index+item)}
                              sections={this.state.responseData}
                              ListHeaderComponent={this.renderHeader.bind(this)}
-                             stickySectionHeadersEnabled={true}>
+                             ListFooterComponent={this.renderFooter.bind(this)}
+                             stickySectionHeadersEnabled={false}>  //section header是否悬浮属性
                 </SectionList>
                 {loadingView}
             </View>
@@ -101,7 +104,7 @@ class MyViewController extends PureComponent {
                 <Text style={styles.allOrderTitleStyle} onPress={()=>alert(clickUrl)}>{orderTitle}></Text>
             </View>
         } else if (info.section.name === 'navigation') {
-            titleView = <View style={{height:30}}><Text  style={styles.itemBackTitleStyle}>常用工具</Text></View>
+            titleView = <View style={{height:30}}><Text style={styles.itemBackTitleStyle}>常用工具</Text></View>
         }
 
         return (
@@ -165,6 +168,20 @@ class MyViewController extends PureComponent {
             </View>
         );
     }
+    renderFooter() {
+        let productData = [];
+        if (this.state.footerData) {
+            var products = this.state.footerData.data.items;
+            for (var i = 0;i<products.length;i+=6) {
+                var testDatas = products.slice(i, i+6);
+                productData.push(testDatas);
+            }
+            return (
+                <FooterView products={productData}></FooterView>
+            );
+        }
+        return null;
+    }
     loginBtnClicked() {
         if (this.state.headerData.key === 'logined') {
 
@@ -184,6 +201,7 @@ class MyViewController extends PureComponent {
     configureData(data) {
         var datas=[];
         var hData = null;
+        var fData = null;
         for (var i = 0; i<data.length; i++) {
             var testData = data[i];
             if ((testData['key'] === 'unlogined') || (testData['key'] === 'logined')) {
@@ -201,9 +219,11 @@ class MyViewController extends PureComponent {
             } else if (testData['key'] === 'editComponent') {
                 let requestUrl = 'https:' + testData.data['url'];
                 this.fetchComponentData(requestUrl);
+            } else if (testData['key'] === 'products') {
+                fData = testData;
             }
         }
-        this.setState({responseData: datas, headerData: hData, loadingShowed: false});
+        this.setState({responseData: datas, headerData: hData, footerData: fData, loadingShowed: false});
     }
     fetchComponentData(componentUrl) {
         DataRequest.get(componentUrl, null, (responseData)=>{

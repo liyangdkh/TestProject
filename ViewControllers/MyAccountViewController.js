@@ -16,7 +16,6 @@ var {width, height} = Dimensions.get('window');
 
 var DataRequest = require('../DataRequest/DataRequest');
 
-
 var LoadingView = require('../Views/LoadingView');
 
 class MyAccountViewController extends PureComponent {
@@ -56,6 +55,7 @@ class MyAccountViewController extends PureComponent {
                              renderItem={this.renderItem.bind(this)}
                              ListFooterComponent={this.renderFooter.bind(this)}
                              keyExtractor={(item,index)=>("index"+index+item)}
+                             stickySectionHeadersEnabled={false}
                              sections={this.state.responseData}></SectionList>
             </View>
         }

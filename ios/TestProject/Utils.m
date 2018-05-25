@@ -19,6 +19,10 @@
 
 RCT_EXPORT_MODULE();
 
++ (BOOL)requiresMainQueueSetup {
+    return YES;
+}
+
 RCT_EXPORT_METHOD(fetchObject:(NSString *)key callback:(RCTResponseSenderBlock)callBack) {
     NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:key];
     if (token) {
@@ -192,10 +196,6 @@ RCT_EXPORT_METHOD(setCookie:(NSString *)text) {
             [storage deleteCookie:cookie];
         }
     }
-}
-
-+ (BOOL)requiresMainQueueSetup {
-    return YES;
 }
 
 @end
